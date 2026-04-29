@@ -377,12 +377,12 @@ export default function Builder() {
   }, [height]);
 
   useEffect(() => {
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
+    window.addEventListener("pointermove", handleMouseMove);
+    window.addEventListener("pointerup", handleMouseUp);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("pointermove", handleMouseMove);
+      window.removeEventListener("pointerup", handleMouseUp);
     };
   }, [isDragging]);
 
@@ -687,7 +687,7 @@ export default function Builder() {
               <RotateCcw size={14} />
               Reset Data
             </button>
-            
+
             <button
               onClick={async () => {
                 if (confirm("Are you sure you want to log out?")) {
@@ -725,9 +725,9 @@ export default function Builder() {
 
           {/* DRAG BAR */}
           <div
-            onMouseDown={handleMouseDown}
+            onPointerDown={handleMouseDown}
             onDoubleClick={() => setHeight(140)}
-            className="h-2 cursor-row-resize bg-white/10 hover:bg-cyan-500/40 transition"
+            className="h-3 cursor-row-resize bg-white/10 hover:bg-cyan-500/40 transition"
           />
 
           <div className="flex-1 overflow-y-auto p-6 custom-scrollbar scroll-smooth">
