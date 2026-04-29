@@ -576,7 +576,7 @@ export default function Builder() {
               }}
               className="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/50 text-green-400 text-xs font-bold hover:bg-green-500/20 transition-all"
             >
-              Save
+              <Save size={17} /> Save
             </button>
 
             <button
