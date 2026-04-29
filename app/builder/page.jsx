@@ -273,7 +273,6 @@ export default function Builder() {
   const [atsResult, setAtsResult] = useState(null);
   const [showATS, setShowATS] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [loadingUser, setLoadingUser] = useState(true);
   const menuRef = useRef(null);
   const [height, setHeight] = useState(() => {
     if (typeof window !== "undefined") {
@@ -451,41 +450,7 @@ export default function Builder() {
     checkUser();
   }, []);
 
-  useEffect(() => {
-    const checkUser = async () => {
-      const { data } = await supabase.auth.getUser();
-
-      if (!data.user) {
-        router.push("/login");
-      } else {
-        const user = data.user;
-        setUser(user);
-
-        const savedData = await loadUserData(user.id);
-        const profile = await loadUserProfile(user.id);
-
-        if (savedData) {
-          setData(savedData);
-        } else if (profile) {
-          setData((prev) => ({
-            ...prev,
-            name: profile.name || "",
-            email: profile.email || "",
-          }));
-        }
-      }
-
-      setLoadingUser(false); // 🔥
-    };
-
-    checkUser();
-  }, []);
-
   if (!section) return <FloatingCards setSection={setSection} />;
-
-  if (loadingUser) {
-    return <div className="text-white">Loading...</div>;
-  }
 
   return (
     <div className="relative min-h-screen text-white overflow-hidden bg-[#050505]">
