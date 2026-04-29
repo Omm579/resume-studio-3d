@@ -670,7 +670,8 @@ export default function Builder() {
                 }}
                 className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-white/10 text-white text-[15px] font-medium transition"
               >
-                ↩ Undo Reset
+                <Undo size={14} />
+                Undo Reset
               </button>
             )}
 
@@ -683,7 +684,8 @@ export default function Builder() {
               }}
               className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-red-500/20 text-red-400 text-[15px] font-medium transition"
             >
-              🔄 Reset Data
+              <RotateCcw size={14} />
+              Reset Data
             </button>
             
             <button
