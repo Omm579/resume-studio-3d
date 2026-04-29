@@ -54,8 +54,10 @@ export default function FloatingCards({ setSection }) {
 
       if (data?.name) {
         setUserName(data.name);
+      } else if (user?.user_metadata?.name) {
+        setUserName(user.user_metadata.name);
       } else {
-        setUserName(user.email); // fallback
+        setUserName(user.email);
       }
     };
 

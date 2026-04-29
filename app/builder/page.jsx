@@ -383,6 +383,14 @@ export default function Builder() {
   }, [height]);
 
   useEffect(() => {
+    const init = async () => {
+      await supabase.auth.refreshSession();
+    };
+
+    init();
+  }, []);
+
+  useEffect(() => {
     window.addEventListener("pointermove", handleMouseMove);
     window.addEventListener("pointerup", handleMouseUp);
 
