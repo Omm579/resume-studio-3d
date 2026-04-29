@@ -326,10 +326,16 @@ export default function Builder() {
     }
   };
 
-  const handleMouseDown = () => setIsDragging(true);
+  const handleMouseDown = (e) => {
+    e.preventDefault(); 
+    setIsDragging(true);
+  };
 
   const handleMouseMove = (e) => {
     if (!isDragging) return;
+
+    e.preventDefault(); // 🔥 add this
+
     setHeight((prev) => {
       const newHeight = prev + e.movementY;
       return Math.max(80, Math.min(300, newHeight));
@@ -727,7 +733,8 @@ export default function Builder() {
           <div
             onPointerDown={handleMouseDown}
             onDoubleClick={() => setHeight(140)}
-            className="h-3 cursor-row-resize bg-white/10 hover:bg-cyan-500/40 transition"
+            style={{ touchAction: "none" }}
+            className="h-3 cursor-row-resize bg-white/10 hover:bg-cyan-500/40 transition touch-none"
           />
 
           <div className="flex-1 overflow-y-auto p-6 custom-scrollbar scroll-smooth">
