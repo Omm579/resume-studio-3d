@@ -40,24 +40,24 @@ export default function FloatingCards({ setSection }) {
         data: { user },
       } = await supabase.auth.getUser();
 
-      console.log("USER:", user);
-
       if (!user) return;
 
-      const { data, error } = await supabase
+      // ✅ STEP 1: instant fallback (fast)
+      if (user.user_metadata?.name) {
+        setUserName(user.user_metadata.name);
+      } else {
+        setUserName(user.email); // instant show
+      }
+
+      // ✅ STEP 2: fetch DB in background (slow but optional)
+      const { data } = await supabase
         .from("users")
         .select("name")
         .eq("id", user.id)
         .single();
 
-      console.log("DATA:", data);
-
       if (data?.name) {
-        setUserName(data.name);
-      } else if (user?.user_metadata?.name) {
-        setUserName(user.user_metadata.name);
-      } else {
-        setUserName(user.email);
+        setUserName(data.name); // update silently
       }
     };
 

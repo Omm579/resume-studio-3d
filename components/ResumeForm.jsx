@@ -1,5 +1,6 @@
 "use client";
 import { User, Code, Briefcase, GraduationCap, Award } from "lucide-react";
+import { X } from "lucide-react";
 
 export default function ResumeForm({ data, setData }) {
   const handleChange = (e) => {
@@ -229,6 +230,16 @@ export default function ResumeForm({ data, setData }) {
                 handleNestedArrayChange("projects", i, "points", j, val)
               }
               onAdd={() => addNestedItem("projects", i, "points")}
+              onRemove={(j) => {
+                setData((prev) => {
+                  const updated = [...(prev.projects || [])];
+                  const points = updated[i].points.filter(
+                    (_, idx) => idx !== j,
+                  );
+                  updated[i].points = points;
+                  return { ...prev, projects: updated };
+                });
+              }}
             />
           </Card>
         ))}
@@ -295,6 +306,16 @@ export default function ResumeForm({ data, setData }) {
                 handleNestedArrayChange("internships", i, "points", j, val)
               }
               onAdd={() => addNestedItem("internships", i, "points")}
+              onRemove={(j) => {
+                setData((prev) => {
+                  const updated = [...(prev.internships || [])];
+                  const points = updated[i].points.filter(
+                    (_, idx) => idx !== j,
+                  );
+                  updated[i].points = points;
+                  return { ...prev, internships: updated };
+                });
+              }}
             />
           </Card>
         ))}
@@ -467,17 +488,25 @@ function AddButton({ children, onClick }) {
   );
 }
 
-function BulletList({ label, items, onChange, onAdd }) {
+function BulletList({ label, items, onChange, onAdd, onRemove }) {
   return (
     <div>
       <label className="text-[10px] text-white/40">{label}</label>
       {(items || []).map((item, i) => (
-        <input
-          key={i}
-          value={item ?? ""}
-          onChange={(e) => onChange(i, e.target.value)}
-          className="w-full mt-1 bg-black/20 border border-white/5 rounded-xl p-3 text-sm"
-        />
+        <div key={i} className="flex gap-2 mt-1">
+          <input
+            value={item ?? ""}
+            onChange={(e) => onChange(i, e.target.value)}
+            className="flex-1 bg-black/20 border border-white/5 rounded-xl p-3 text-sm"
+          />
+
+          <button
+            onClick={() => onRemove(i)}
+            className="text-white/30 hover:text-red-400 transition-all duration-200 p-2 rounded-lg hover:bg-red-500/10 hover:scale-110"
+          >
+            <X size={16} strokeWidth={2.5} />
+          </button>
+        </div>
       ))}
       <button onClick={onAdd} className="text-cyan-400 text-xs mt-1">
         + Add Point

@@ -3,38 +3,59 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { motion, useSpring, useMotionValue } from "framer-motion";
 import { useRouter } from "next/navigation";
+
 const Scene = dynamic(() => import("@/components/Scene"), { ssr: false });
+
 export default function Home() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const springX = useSpring(mouseX, { stiffness: 50, damping: 25 });
   const springY = useSpring(mouseY, { stiffness: 50, damping: 25 });
+
   const router = useRouter();
+
   const [scrollY, setScrollY] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
+  // ✅ Handle mouse + scroll + resize properly
   useEffect(() => {
-    const move = (e) => {
+    const handleMove = (e) => {
       mouseX.set(e.clientX - 80);
       mouseY.set(e.clientY - 80);
     };
+
     const handleScroll = () => setScrollY(window.scrollY);
 
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    handleResize(); // initial check
+
     if (window.innerWidth >= 768) {
-      window.addEventListener("mousemove", move);
+      window.addEventListener("mousemove", handleMove);
     }
+
     window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener("mousemove", move);
+      window.removeEventListener("mousemove", handleMove);
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [mouseX, mouseY]);
 
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-  }, []);
+  // ✅ Prevent multiple clicks spam
+  const handleStart = () => {
+    if (isExiting) return;
+    setIsExiting(true);
+
+    setTimeout(() => {
+      router.push("/builder");
+    }, 1000);
+  };
 
   return (
     <div className="bg-black text-white overflow-x-hidden">
@@ -51,12 +72,14 @@ export default function Home() {
         />
       )}
 
-      {/* ⚪ White Transition Overlay (Exiting) */}
+      {/* ⚪ Exit Overlay */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: isExiting ? 1 : 0 }}
         transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
-        className={`fixed inset-0 bg-gray-950 z-[60] ${isExiting ? "pointer-events-auto" : "pointer-events-none"}`}
+        className={`fixed inset-0 bg-gray-950 z-[60] ${
+          isExiting ? "pointer-events-auto" : "pointer-events-none"
+        }`}
       />
 
       <motion.div
@@ -98,11 +121,7 @@ export default function Home() {
           </p>
 
           <motion.button
-            onClick={() => {
-              if (isExiting) return;
-              setIsExiting(true);
-              setTimeout(() => router.push("/builder"), 1000);
-            }}
+            onClick={handleStart}
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
             className="mt-10 px-10 py-4 rounded-full bg-white text-black font-semibold"
@@ -124,33 +143,21 @@ export default function Home() {
             viewport={{ amount: 0.5 }}
             className="max-w-md text-right"
           >
-            <div
-              className="text-xs tracking-widest text-purple-400 mb-3 uppercase"
-              style={{ textShadow: "0 0 20px rgba(170,0,255,0.3)" }}
-            >
+            <div className="text-xs tracking-widest text-purple-400 mb-3 uppercase">
               Smart System
             </div>
 
-            <h2
-              className="text-5xl font-bold mb-6 leading-tight"
-              style={{ textShadow: "0 0 25px rgba(170,0,255,0.4)" }}
-            >
+            <h2 className="text-5xl font-bold mb-6 leading-tight">
               AI Powered <br />
               Resume Builder
             </h2>
 
-            <p
-              className="text-gray-400 mb-6"
-              style={{ textShadow: "0 0 15px rgba(0,255,255,0.15)" }}
-            >
+            <p className="text-gray-400 mb-6">
               Automatically generate industry-ready resumes with smart
               suggestions, optimized keywords, and real-time formatting.
             </p>
 
-            <ul
-              className="space-y-3 text-sm text-gray-300"
-              style={{ textShadow: "0 0 10px rgba(0,255,255,0.1)" }}
-            >
+            <ul className="space-y-3 text-sm text-gray-300">
               <li>✔ Real-time preview</li>
               <li>✔ ATS optimized structure</li>
               <li>✔ Clean templates</li>
@@ -173,33 +180,20 @@ export default function Home() {
             viewport={{ amount: 0.5 }}
             className="max-w-md text-left"
           >
-            <div
-              className="text-xs tracking-widest text-cyan-400 mb-3 uppercase"
-              style={{ textShadow: "0 0 20px rgba(0,255,255,0.3)" }}
-            >
+            <div className="text-xs tracking-widest text-cyan-400 mb-3 uppercase">
               Final Step
             </div>
 
-            <h2
-              className="text-5xl font-bold mb-6 leading-tight"
-              style={{ textShadow: "0 0 25px rgba(0,255,255,0.4)" }}
-            >
+            <h2 className="text-5xl font-bold mb-6 leading-tight">
               Export. Apply. <br />
               Stand Out 🚀
             </h2>
 
-            <p
-              className="text-gray-400 mb-6"
-              style={{ textShadow: "0 0 15px rgba(0,255,255,0.15)" }}
-            >
+            <p className="text-gray-400 mb-6">
               Download high-quality PDFs instantly and apply with confidence.
-              Designed to make recruiters notice you instantly.
             </p>
 
-            <ul
-              className="space-y-3 text-sm text-gray-300"
-              style={{ textShadow: "0 0 10px rgba(0,255,255,0.1)" }}
-            >
+            <ul className="space-y-3 text-sm text-gray-300">
               <li>✔ One-click export</li>
               <li>✔ Beautiful layouts</li>
               <li>✔ Lightning fast</li>
@@ -222,21 +216,13 @@ export default function Home() {
         }}
         className="fixed bottom-6 left-1/2 -translate-x-1/2 z-20 pointer-events-none flex flex-col items-center"
       >
-        <span
-          className="text-xs tracking-widest uppercase text-cyan-400"
-          style={{ textShadow: "0 0 10px rgba(0,255,255,0.6)" }}
-        >
+        <span className="text-xs tracking-widest uppercase text-cyan-400">
           Scroll
         </span>
 
         <div className="mt-2 w-[2px] h-7 bg-gradient-to-b from-cyan-400 via-cyan-400/60 to-transparent opacity-70" />
 
-        <span
-          className="text-cyan-400 text-sm -mt-4"
-          style={{ textShadow: "0 0 12px rgba(0,255,255,0.8)" }}
-        >
-          V
-        </span>
+        <span className="text-cyan-400 text-sm -mt-4">V</span>
       </motion.div>
     </div>
   );
