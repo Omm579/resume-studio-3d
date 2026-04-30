@@ -1,7 +1,34 @@
+"use client";
+import { useEffect, useRef } from "react";
+
 export default function CoverLetter({ data, setData }) {
-  const handleEdit = (e) => {
-    setData((prev) => ({ ...prev, coverLetter: e.target.innerText }));
+  const ref = useRef(null);
+  const timeoutRef = useRef(null);
+
+  const handleEdit = () => {
+    if (!ref.current) return;
+
+    const value = ref.current.innerText;
+
+    clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      setData((prev) => ({
+        ...prev,
+        coverLetter: value,
+      }));
+    }, 200);
   };
+
+  // ✅ IMPORTANT: sync state -> DOM (AI generate ke baad bhi update hoga)
+  useEffect(() => {
+    if (!ref.current) return;
+
+    if (document.activeElement !== ref.current) {
+      ref.current.innerText =
+        data.coverLetter ||
+        "Your cover letter content will appear here. Click to start writing...";
+    }
+  }, [data.coverLetter]);
 
   return (
     <div className="resume-paper bg-white text-gray-800 max-w-[800px] mx-auto p-5 sm:p-8 md:p-12 leading-relaxed text-[13px] md:text-sm font-sans shadow-sm">
@@ -20,19 +47,21 @@ export default function CoverLetter({ data, setData }) {
 
       {/* DATE */}
       <p className="mb-4 text-xs text-gray-500">
-        {new Date().toLocaleDateString()}
+        {new Date().toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        })}
       </p>
 
       {/* BODY */}
       <div
+        ref={ref}
         className="mt-4 md:mt-6 min-h-[300px] md:min-h-[400px] outline-none focus:bg-cyan-50/30 p-2 md:p-4 border-2 border-transparent focus:border-cyan-200 rounded-xl transition-all cursor-text whitespace-pre-wrap text-gray-700"
-        contentEditable={true}
-        suppressContentEditableWarning={true}
+        contentEditable
+        suppressContentEditableWarning
         onInput={handleEdit}
-      >
-        {data.coverLetter ||
-          "Your cover letter content will appear here. Click anywhere to edit manually or use the Generate Letter button above to generate a personalized cover letter based on your resume and the job description."}
-      </div>
+      />
 
       {/* SIGNATURE */}
       <div className="mt-6 md:mt-8">
