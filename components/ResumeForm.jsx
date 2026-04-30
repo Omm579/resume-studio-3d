@@ -16,6 +16,16 @@ export default function ResumeForm({ data, setData }) {
     });
   };
 
+  const validateEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const handleBlur = () => {
+    if (!validateEmail(data.email)) {
+      alert("Please enter a correct email 📧");
+    }
+  };
+
   const handleNestedArrayChange = (
     section,
     index,
@@ -90,25 +100,30 @@ export default function ResumeForm({ data, setData }) {
                 onChange={handleChange}
               />
             </div>
-            {data.profileImage && (
-              <img
-                src={data.profileImage}
-                alt="Profile Preview"
-                className="w-11 h-11 rounded-xl object-cover border border-white/10 bg-white/5"
-              />
-            )}
+
+            <img
+              src={data.profileImage || "/default-avatar.png"}
+              alt="Profile Preview"
+              onError={(e) => {
+                e.target.src = "/default-avatar.png";
+              }}
+              className="w-11 h-11 rounded-xl object-cover border border-white/10 bg-white/5"
+            />
           </div>
           <Input
             label="Full Name"
             name="name"
             value={data.name}
+            autoComplete="name"
             onChange={handleChange}
+            required
           />
           <Input
             label="Role"
             name="role"
             value={data.role}
             onChange={handleChange}
+            required
           />
           <Input
             label="Email"
@@ -118,6 +133,7 @@ export default function ResumeForm({ data, setData }) {
             value={data.email}
             onChange={handleChange}
             required
+            onBlur={handleBlur}
           />
           <Input
             label="Phone"
@@ -127,6 +143,7 @@ export default function ResumeForm({ data, setData }) {
             value={data.phone}
             onChange={handleChange}
             pattern="[0-9]{10}"
+            required
           />
           <Input
             label="Location"
