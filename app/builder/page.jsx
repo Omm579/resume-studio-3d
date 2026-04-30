@@ -229,7 +229,7 @@ async function loadUserData(userId) {
     .from("resumes")
     .select("content")
     .eq("user_id", userId)
-    .single();
+    .maybeSingle();
 
   return data?.content || null;
 }
@@ -239,7 +239,7 @@ async function loadUserProfile(userId) {
     .from("users")
     .select("name, email")
     .eq("id", userId)
-    .single();
+    .maybeSingle();
 
   return data;
 }
@@ -274,6 +274,8 @@ export default function Builder() {
   const [showATS, setShowATS] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
+  const [loading, setLoading] = useState(true);
+  const timeoutRef = useRef(null);
   const [height, setHeight] = useState(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("panelHeight");
@@ -345,27 +347,28 @@ export default function Builder() {
   const handleMouseUp = () => setIsDragging(false);
 
   const generateCoverLetter = () => {
-    if (!data.name || !data.role || !data.company) {
-      alert("Fill Name, Role, Company first");
-      return;
-    }
+  if (!data.name || !data.role || !data.company) {
+    alert("Fill Name, Role, Company first");
+    return;
+  }
 
-    setIsGenerating(true);
+  setIsGenerating(true);
 
-    setTimeout(() => {
-      const randomIndex = Math.floor(
-        Math.random() * coverLetterTemplates.length,
-      );
-      const generated = coverLetterTemplates[randomIndex](data);
+  setTimeout(() => {
+    const randomIndex = Math.floor(
+      Math.random() * coverLetterTemplates.length
+    );
 
-      setData((prev) => ({
-        ...prev,
-        coverLetter: generated,
-      }));
+    const generated = coverLetterTemplates[randomIndex](data);
 
-      setIsGenerating(false);
-    }, 400);
-  };
+    setData((prev) => ({
+      ...prev,
+      coverLetter: generated,
+    }));
+
+    setIsGenerating(false);
+  }, 400);
+};
 
   const handleUndo = () => {
     if (undoBuffer) {
@@ -404,11 +407,19 @@ export default function Builder() {
     const timer = setTimeout(() => {
       const result = calculateATSScore(data);
       setAtsResult(result);
-      setShowATS(true);
-    }, 300);
+      setShowATS((prev) => prev);
+    }, 600);
 
     return () => clearTimeout(timer);
   }, [data]);
+
+  useEffect(() => {
+  return () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  };
+}, []);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -444,7 +455,11 @@ export default function Builder() {
 
         // 🔥 STEP 3: merge data
         if (savedData) {
-          setData(savedData);
+          setData({
+            ...savedData,
+            name: savedData.name || profile?.name || "",
+            email: savedData.email || profile?.email || "",
+          });
         } else if (profile) {
           setData((prev) => ({
             ...prev,
@@ -453,8 +468,9 @@ export default function Builder() {
           }));
         }
       }
+      setLoading(false);
     };
-
+    
     checkUser();
   }, []);
 
@@ -547,9 +563,9 @@ export default function Builder() {
               >
                 <Sparkles
                   size={14}
-                  className={isGenerating ? "animate-pulse" : ""}
+                  className={isGenerating ? "animate-spin" : ""}
                 />
-                {isGenerating ? "Writing..." : "Generate Letter"}
+                {isGenerating ? "Generating..." : "Generate Letter"}
               </button>
             )}
 
