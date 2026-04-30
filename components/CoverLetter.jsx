@@ -5,6 +5,7 @@ export default function CoverLetter({ data, setData }) {
   const ref = useRef(null);
   const timeoutRef = useRef(null);
 
+  // ✅ Debounced input
   const handleEdit = () => {
     if (!ref.current) return;
 
@@ -19,19 +20,18 @@ export default function CoverLetter({ data, setData }) {
     }, 200);
   };
 
-  // ✅ IMPORTANT: sync state -> DOM (AI generate ke baad bhi update hoga)
+  // ✅ Sync state -> DOM (safe, no cursor jump)
   useEffect(() => {
     if (!ref.current) return;
 
     if (document.activeElement !== ref.current) {
-      ref.current.innerText =
-        data.coverLetter ||
-        "Your cover letter content will appear here. Click to start writing...";
+      ref.current.innerText = data.coverLetter || "";
     }
   }, [data.coverLetter]);
 
   return (
     <div className="resume-paper bg-white text-gray-800 max-w-[800px] mx-auto p-5 sm:p-8 md:p-12 leading-relaxed text-[13px] md:text-sm font-sans shadow-sm">
+      
       {/* HEADER */}
       <div className="mb-4 md:mb-6 border-b pb-4">
         <h1 className="text-base md:text-lg font-bold uppercase tracking-tight">
@@ -53,6 +53,13 @@ export default function CoverLetter({ data, setData }) {
           year: "numeric",
         })}
       </p>
+
+      {/* ✅ HINT (clean placeholder UX) */}
+      {!data.coverLetter && (
+        <p className="text-xs text-gray-400 mb-2">
+          Your cover letter will appear here. Click “Generate Letter” to get started.
+        </p>
+      )}
 
       {/* BODY */}
       <div
