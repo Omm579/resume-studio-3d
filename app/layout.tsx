@@ -14,43 +14,37 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: "Resumeverse3D — Build. Impress. Get Hired.",
-    template: "%s | Resumeverse3D",
-  },
-
+export const metadata = {
+  title: "ResumeVerse 3D | Build ATS-Optimized Resume in Seconds",
   description:
-    "Create stunning resumes and cover letters with a next-gen 3D interactive experience. Designed to help you stand out and get hired faster.",
-
+    "Build ATS-optimized resumes in seconds. Get real-time ATS score, AI suggestions, and export instantly.",
   keywords: [
-    "resume builder",
-    "cover letter generator",
-    "3D resume",
-    "ATS resume",
-    "portfolio builder",
-    "job application tools",
+    "ATS resume builder",
+    "AI resume builder",
+    "resume builder free",
+    "ATS score checker",
+    "resume maker online"
   ],
-
   authors: [{ name: "Om Debasish" }],
   creator: "Om Debasish",
-
   metadataBase: new URL("https://www.resumeverse3d.me"),
-
   themeColor: "#000000",
+  robots: {
+    index: true,
+    follow: true,
+  },
 
   openGraph: {
-    title: "Resumeverse3D — 3D Resume Studio",
+    title: "Build ATS-Optimized Resumes in Seconds",
     description:
-      "Build stunning resumes & cover letters in a futuristic 3D environment. Impress recruiters instantly.",
-    url: "https://www.resumeverse3d.me",
-    siteName: "Resumeverse3D",
+      "Create ATS-friendly resumes with real-time scoring, AI suggestions, and instant export.",
+    siteName: "ResumeVerse 3D",
     images: [
       {
-        url: "/og.png",
+        url: "https://resumeverse3d.me/og-image.png", // 👈 yeh important
         width: 1200,
         height: 630,
-        alt: "Resumeverse3D - 3D Resume Studio",
+        alt: "ResumeVerse 3D Preview",
       },
     ],
     locale: "en_US",
@@ -59,21 +53,10 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Resumeverse3D — Build. Impress. Get Hired.",
+    title: "ATS-Optimized Resume Builder",
     description:
-      "Create stunning resumes and cover letters with a futuristic 3D experience.",
-    images: ["/og.png"],
-  },
-
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/favicon.ico",
-  },
-
-  robots: {
-    index: true,
-    follow: true,
+      "Create resumes that pass ATS filters. Get 90+ score instantly.",
+    images: ["https://resumeverse3d.me/og-image.png"],
   },
 };
 

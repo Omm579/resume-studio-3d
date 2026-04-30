@@ -347,28 +347,28 @@ export default function Builder() {
   const handleMouseUp = () => setIsDragging(false);
 
   const generateCoverLetter = () => {
-  if (!data.name || !data.role || !data.company) {
-    alert("Fill Name, Role, Company first");
-    return;
-  }
+    if (!data.name || !data.role || !data.company) {
+      alert("Fill Name, Role, Company first");
+      return;
+    }
 
-  setIsGenerating(true);
+    setIsGenerating(true);
 
-  setTimeout(() => {
-    const randomIndex = Math.floor(
-      Math.random() * coverLetterTemplates.length
-    );
+    setTimeout(() => {
+      const randomIndex = Math.floor(
+        Math.random() * coverLetterTemplates.length,
+      );
 
-    const generated = coverLetterTemplates[randomIndex](data);
+      const generated = coverLetterTemplates[randomIndex](data);
 
-    setData((prev) => ({
-      ...prev,
-      coverLetter: generated,
-    }));
+      setData((prev) => ({
+        ...prev,
+        coverLetter: generated,
+      }));
 
-    setIsGenerating(false);
-  }, 400);
-};
+      setIsGenerating(false);
+    }, 400);
+  };
 
   const handleUndo = () => {
     if (undoBuffer) {
@@ -384,14 +384,6 @@ export default function Builder() {
   useEffect(() => {
     localStorage.setItem("panelHeight", height);
   }, [height]);
-
-  useEffect(() => {
-    const init = async () => {
-      await supabase.auth.refreshSession();
-    };
-
-    init();
-  }, []);
 
   useEffect(() => {
     window.addEventListener("pointermove", handleMouseMove);
@@ -414,12 +406,12 @@ export default function Builder() {
   }, [data]);
 
   useEffect(() => {
-  return () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-  };
-}, []);
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -470,7 +462,7 @@ export default function Builder() {
       }
       setLoading(false);
     };
-    
+
     checkUser();
   }, []);
 
