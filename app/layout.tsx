@@ -35,7 +35,7 @@ export const metadata = {
   },
 
   openGraph: {
-    title: "Build ATS-Optimized Resumes in Seconds",
+    title: "Build ATS-Optimized Resumes",
     description:
       "Create ATS-friendly resumes with real-time scoring, AI suggestions, and instant export.",
     siteName: "ResumeVerse 3D",
