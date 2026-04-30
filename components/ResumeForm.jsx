@@ -113,14 +113,20 @@ export default function ResumeForm({ data, setData }) {
           <Input
             label="Email"
             name="email"
+            type="email"
+            autoComplete="email"
             value={data.email}
             onChange={handleChange}
+            required
           />
           <Input
             label="Phone"
             name="phone"
+            type="tel"
+            autoComplete="tel"
             value={data.phone}
             onChange={handleChange}
+            pattern="[0-9]{10}"
           />
           <Input
             label="Location"
@@ -441,7 +447,11 @@ function Card({ children, onRemove }) {
   return (
     <div className="p-4 bg-white/[0.03] rounded-2xl border border-white/10 space-y-3 relative group hover:bg-white/[0.05] transition-colors">
       <button
-        onClick={onRemove}
+        onClick={() => {
+          if (confirm("❌ Remove this item?")) {
+            onRemove();
+          }
+        }}
         className="absolute top-2 right-3 text-red-400 opacity-70 group-hover:opacity-100 text-xs"
       >
         Remove
@@ -501,7 +511,11 @@ function BulletList({ label, items, onChange, onAdd, onRemove }) {
           />
 
           <button
-            onClick={() => onRemove(i)}
+            onClick={() => {
+              if (confirm("❌ Remove this point?")) {
+                onRemove(i);
+              }
+            }}
             className="text-white/30 hover:text-red-400 transition-all duration-200 p-2 rounded-lg hover:bg-red-500/10 hover:scale-110"
           >
             <X size={16} strokeWidth={2.5} />
