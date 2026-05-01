@@ -97,21 +97,23 @@ export default function Home() {
             initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
-            className="text-6xl md:text-8xl font-black leading-tight"
+            className="text-6xl md:text-8xl font-black leading-tight tracking-tighter drop-shadow-2xl"
           >
-            <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
               Build. Impress.
             </span>
             <br />
-            Get Hired.
+            <span className="text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+              Get Hired.
+            </span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="mt-6 text-lg text-gray-400 max-w-xl"
-            style={{ textShadow: "0 0 20px rgba(0,255,255,0.15)" }}
+            className="mt-6 text-lg text-gray-400 max-w-xl leading-relaxed"
+            style={{ textShadow: "0 0 30px rgba(0,255,255,0.2)" }}
           >
             Create stunning resumes & cover letters in a next-gen 3D experience.
           </motion.p>
@@ -123,10 +125,10 @@ export default function Home() {
           <motion.button
             onClick={handleStart}
             whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.95 }}
-            className="mt-10 px-10 py-4 rounded-full bg-white text-black font-semibold"
+            whileTap={{ scale: 0.98 }}
+            className="mt-10 px-10 py-4 rounded-full bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 text-white font-bold tracking-wide shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_35px_rgba(6,182,212,0.5)] transition-shadow"
           >
-            Start Creating
+            START CREATING
           </motion.button>
         </section>
 
@@ -143,24 +145,33 @@ export default function Home() {
             viewport={{ amount: 0.5 }}
             className="max-w-md text-right"
           >
-            <div className="text-xs tracking-widest text-purple-400 mb-3 uppercase">
+            <div className="inline-block px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-[10px] tracking-[0.2em] text-purple-400 mb-6 uppercase font-bold">
               Smart System
             </div>
 
-            <h2 className="text-5xl font-bold mb-6 leading-tight">
+            <h2 className="text-5xl font-black mb-6 leading-tight tracking-tight text-white">
               AI Powered <br />
-              Resume Builder
+              <span className="text-purple-400">Resume Builder</span>
             </h2>
 
-            <p className="text-gray-400 mb-6">
+            <p className="text-gray-400 mb-8 leading-relaxed">
               Automatically generate industry-ready resumes with smart
               suggestions, optimized keywords, and real-time formatting.
             </p>
 
             <ul className="space-y-3 text-sm text-gray-300">
-              <li>✔ Real-time preview</li>
-              <li>✔ ATS optimized structure</li>
-              <li>✔ Clean templates</li>
+              <li className="flex items-center justify-end gap-2">
+                <span>Real-time preview</span>
+                <span className="text-purple-400 font-bold">✔</span>
+              </li>
+              <li className="flex items-center justify-end gap-2">
+                <span>ATS optimized structure</span>
+                <span className="text-purple-400 font-bold">✔</span>
+              </li>
+              <li className="flex items-center justify-end gap-2">
+                <span>Clean templates</span>
+                <span className="text-purple-400 font-bold">✔</span>
+              </li>
             </ul>
 
             <div className="mt-8 h-[2px] w-full bg-gradient-to-l from-purple-500 to-transparent opacity-50" />
@@ -180,23 +191,32 @@ export default function Home() {
             viewport={{ amount: 0.5 }}
             className="max-w-md text-left"
           >
-            <div className="text-xs tracking-widest text-cyan-400 mb-3 uppercase">
+            <div className="inline-block px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-[10px] tracking-[0.2em] text-cyan-400 mb-6 uppercase font-bold">
               Final Step
             </div>
 
-            <h2 className="text-5xl font-bold mb-6 leading-tight">
+            <h2 className="text-5xl font-black mb-6 leading-tight tracking-tight text-white">
               Export. Apply. <br />
-              Stand Out 🚀
+              <span className="text-cyan-400">Stand Out 🚀</span>
             </h2>
 
-            <p className="text-gray-400 mb-6">
+            <p className="text-gray-400 mb-8 leading-relaxed">
               Download high-quality PDFs instantly and apply with confidence.
             </p>
 
             <ul className="space-y-3 text-sm text-gray-300">
-              <li>✔ One-click export</li>
-              <li>✔ Beautiful layouts</li>
-              <li>✔ Lightning fast</li>
+              <li className="flex items-center justify-start gap-2">
+                <span className="text-cyan-400 font-bold">✔</span>
+                <span>One-click export</span>
+              </li>
+              <li className="flex items-center justify-start gap-2">
+                <span className="text-cyan-400 font-bold">✔</span>
+                <span>Beautiful layouts</span>
+              </li>
+              <li className="flex items-center justify-start gap-2">
+                <span className="text-cyan-400 font-bold">✔</span>
+                <span>Lightning fast</span>
+              </li>
             </ul>
 
             <div className="mt-8 h-[2px] w-full bg-gradient-to-r from-cyan-500 to-transparent opacity-50" />
@@ -216,13 +236,13 @@ export default function Home() {
         }}
         className="fixed bottom-6 left-1/2 -translate-x-1/2 z-20 pointer-events-none flex flex-col items-center"
       >
-        <span className="text-xs tracking-widest uppercase text-cyan-400">
+        <span className="text-[10px] tracking-[0.3em] uppercase text-cyan-400 font-bold">
           Scroll
         </span>
 
         <div className="mt-2 w-[2px] h-7 bg-gradient-to-b from-cyan-400 via-cyan-400/60 to-transparent opacity-70" />
 
-        <span className="text-cyan-400 text-sm -mt-4">V</span>
+        <span className="text-cyan-400 text-xs -mt-3 font-bold">V</span>
       </motion.div>
     </div>
   );

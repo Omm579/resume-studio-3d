@@ -42,14 +42,12 @@ export default function FloatingCards({ setSection }) {
 
       if (!user) return;
 
-      // ✅ STEP 1: instant fallback (fast)
       if (user.user_metadata?.name) {
         setUserName(user.user_metadata.name);
       } else {
-        setUserName(user.email); // instant show
+        setUserName(user.email);
       }
 
-      // ✅ STEP 2: fetch DB in background (slow but optional)
       const { data } = await supabase
         .from("users")
         .select("name")
@@ -57,7 +55,7 @@ export default function FloatingCards({ setSection }) {
         .single();
 
       if (data?.name) {
-        setUserName(data.name); // update silently
+        setUserName(data.name);
       }
     };
 
@@ -194,15 +192,11 @@ export default function FloatingCards({ setSection }) {
       max-w-[90%] justify-center
     "
         >
-          {/* glow */}
           <div className="absolute inset-0 rounded-full bg-cyan-500/20 blur-xl opacity-20" />
-
           <span className="text-gray-400">Hi,</span>
-
           <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent font-semibold truncate max-w-[120px] sm:max-w-none">
             {userName}
           </span>
-
           <span className="inline-block text-lg sm:text-xl scale-110 animate-[wave_2s_infinite] origin-[70%_70%]">
             👋
           </span>
@@ -223,26 +217,12 @@ export default function FloatingCards({ setSection }) {
             animate={
               isExiting
                 ? isSelected
-                  ? {
-                      scale: 3,
-                      zIndex: 50,
-                      rotateY: 0,
-                      x: 0,
-                      y: -50,
-                    }
-                  : {
-                      opacity: 0,
-                      scale: 0.5,
-                      x: i === 0 ? -300 : 300,
-                    }
+                  ? { scale: 3, zIndex: 50, rotateY: 0, x: 0, y: -50 }
+                  : { opacity: 0, scale: 0.5, x: i === 0 ? -300 : 300 }
                 : { opacity: 1, y: 0 }
             }
             transition={{ duration: 0.8, ease: "easeInOut" }}
-            whileHover={{
-              scale: 1.08,
-              rotateY: i === 0 ? -8 : 8,
-              rotateX: 5,
-            }}
+            whileHover={{ scale: 1.08, rotateY: i === 0 ? -8 : 8, rotateX: 5 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => handleCardClick(card.id)}
             className={`relative z-10 group w-full max-w-[280px] h-[360px] md:w-72 md:h-96 rounded-3xl cursor-pointer
@@ -250,12 +230,9 @@ export default function FloatingCards({ setSection }) {
               backdrop-blur-2xl bg-white/5 border border-white/10
               shadow-2xl ${card.glow}`}
           >
-            {/* gradient */}
             <div
               className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${card.color} opacity-40 group-hover:opacity-100`}
             />
-
-            {/* content */}
             <motion.div
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 4 + i, repeat: Infinity }}
@@ -264,23 +241,80 @@ export default function FloatingCards({ setSection }) {
               <div className="text-5xl md:text-6xl mb-4 md:mb-6">
                 {card.icon}
               </div>
-
               <h2 className="text-xl md:text-2xl font-bold mb-2">
                 {card.title}
               </h2>
-
               <p className="text-xs md:text-sm text-gray-400 opacity-0 group-hover:opacity-100">
                 {card.desc}
               </p>
             </motion.div>
-
-            {/* shine */}
             <div className="absolute inset-0 overflow-hidden rounded-3xl">
               <div className="absolute w-1/2 h-full bg-white/10 blur-xl rotate-12 translate-x-[-150%] group-hover:translate-x-[200%] transition-all duration-1000" />
             </div>
           </motion.div>
         );
       })}
+
+      {/* FOOTER */}
+      <motion.footer
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6, duration: 0.8 }}
+        className="absolute bottom-0 left-0 w-full z-10 px-6 py-4 overflow-hidden"
+      >
+        {/* 🌌 animated glow background */}
+        <motion.div
+          style={{ x: springX, y: springY }}
+          animate={{ opacity: [0.2, 0.4, 0.2] }}
+          transition={{ duration: 8, repeat: Infinity }}
+          className="absolute w-[300px] h-[300px] bg-cyan-500/10 blur-[120px] rounded-full bottom-[-120px] left-[-80px]"
+        />
+
+        {/* ✨ gradient line (animated) */}
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent mb-3" />
+
+        <div className="relative flex items-center justify-center gap-2 flex-wrap text-xs">
+          {/* pulse dots */}
+          <span className="hidden sm:flex items-center gap-1 mr-1">
+            <span className="w-1 h-1 rounded-full bg-cyan-400/60 animate-pulse" />
+            <span
+              className="w-1 h-1 rounded-full bg-purple-400/50 animate-pulse"
+              style={{ animationDelay: "0.3s" }}
+            />
+          </span>
+
+          <span className="text-white/30 tracking-widest uppercase font-light">
+            © 2026
+          </span>
+
+          <span className="text-white/30 font-light">ResumeVerse 3D</span>
+
+          <span className="text-white/15">|</span>
+
+          <span className="text-white/30 font-light">Made by</span>
+
+          {/* 🔥 name with glow + hover interaction */}
+          <motion.span
+            whileHover={{ scale: 1.05 }}
+            className="relative font-semibold tracking-wide bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent cursor-default"
+          >
+            Om Debasish
+            <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-gradient-to-r from-cyan-400 to-transparent group-hover:w-full transition-all duration-500" />
+          </motion.span>
+
+          {/* right dots */}
+          <span className="hidden sm:flex items-center gap-1 ml-1">
+            <span
+              className="w-1 h-1 rounded-full bg-purple-400/50 animate-pulse"
+              style={{ animationDelay: "0.15s" }}
+            />
+            <span
+              className="w-1 h-1 rounded-full bg-cyan-400/60 animate-pulse"
+              style={{ animationDelay: "0.45s" }}
+            />
+          </span>
+        </div>
+      </motion.footer>
     </div>
   );
 }
