@@ -47,7 +47,7 @@
 
 ```
   ┌──────────┐    ┌──────┐    ┌─────────────────┐    ┌──────────────┐    ┌────────────┐
-  │ 3D Landing│ → │ Auth │ → │ Builder Workspace│ → │ Live Preview │ → │ PDF Export │
+  │3D Landing│ →  │ Auth │ →  │Builder Workspace│ →  │Live Preview  │ →  │ PDF Export │
   └──────────┘    └──────┘    └─────────────────┘    └──────────────┘    └────────────┘
 ```
 
@@ -222,9 +222,16 @@ ollama serve
 
 <div align="center">
 
-<img src="https://avatars.githubusercontent.com/Omm579" width="88" style="border-radius:50%; border: 3px solid #00ffe0;"/>
-
-<br/><br/>
+   <img src="https://avatars.githubusercontent.com/Omm579"
+       width="110"
+       style="
+       border-radius:50%;
+       padding:4px;
+       background: linear-gradient(135deg, #00ffe0, #7b2fff);
+       box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+       " />
+   
+<br/>
 
 **Om Debasish**
 
