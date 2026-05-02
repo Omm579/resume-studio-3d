@@ -161,7 +161,9 @@ const ModernTemplate = ({ data = {} }) => {
                         rel="noreferrer"
                         className="text-cyan-500 hover:text-cyan-300 underline break-all transition-colors duration-200"
                       >
-                        {proj.url.includes("github") ? "GitHub Repo" : "Live Project"}
+                        {proj.url.includes("github")
+                          ? "GitHub Repo"
+                          : "Live Project"}
                       </a>
                     </p>
                   )}
@@ -178,8 +180,10 @@ const ModernTemplate = ({ data = {} }) => {
 
         {/* 🔵 RIGHT SIDE */}
         <div className="space-y-10 max-w-sm">
-          {/* SKILLS */}
+          {" "}
+          {/* SKILLS */}{" "}
           <Section title="Skills">
+            {" "}
             {[
               ["Languages", languages],
               ["Frontend", frontend],
@@ -191,13 +195,12 @@ const ModernTemplate = ({ data = {} }) => {
             ].map(([label, value], i) =>
               value ? (
                 <p key={i} className="text-sm">
-                  <span className="font-medium text-slate-700">{label}:</span>{" "}
-                  {value}
+                  {" "}
+                  <b>{label}:</b> {value}{" "}
                 </p>
               ) : null,
-            )}
+            )}{" "}
           </Section>
-
           {/* EDUCATION */}
           {education.length > 0 && (
             <Section title="Education">
@@ -212,7 +215,6 @@ const ModernTemplate = ({ data = {} }) => {
               ))}
             </Section>
           )}
-
           {/* ACHIEVEMENTS */}
           {safeArray(achievements).length > 0 && (
             <Section title="Achievements">
@@ -223,7 +225,6 @@ const ModernTemplate = ({ data = {} }) => {
               </ul>
             </Section>
           )}
-
           {/* CERTIFICATIONS */}
           {safeArray(certifications).length > 0 && (
             <Section title="Certifications">
@@ -234,7 +235,6 @@ const ModernTemplate = ({ data = {} }) => {
               </ul>
             </Section>
           )}
-
           {/* ACTIVITIES */}
           {safeArray(activities).length > 0 && (
             <Section title="Activities">
@@ -249,7 +249,6 @@ const ModernTemplate = ({ data = {} }) => {
               </ul>
             </Section>
           )}
-
           {/* EXTRA */}
           {(strengths || interests) && (
             <Section title="Additional">

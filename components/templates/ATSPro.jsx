@@ -86,9 +86,13 @@ export default function ATSPro({ data }) {
         <Section title="PROJECTS">
           {data.projects.map((proj, i) => (
             <div key={i} className="mb-2">
-              <p className="font-bold">
-                {proj.title} {proj.tech && `| ${proj.tech}`}
+              <p className="font-bold text-xs">
+                {proj.title}{" "}
+                {proj.tech && (
+                  <span className="opacity-60"> • {proj.tech}</span>
+                )}
               </p>
+
               {proj.url && (
                 <p className="text-[11px]">
                   <a
@@ -97,7 +101,9 @@ export default function ATSPro({ data }) {
                     rel="noopener noreferrer"
                     className="underline"
                   >
-                    {proj.url.includes("github") ? "GitHub Repo" : "Live Project"}
+                    {proj.url.includes("github")
+                      ? "GitHub Repo"
+                      : "Live Project"}
                   </a>
                 </p>
               )}
