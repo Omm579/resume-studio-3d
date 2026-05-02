@@ -5,7 +5,10 @@ import { X } from "lucide-react";
 export default function ResumeForm({ data, setData }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setData((prev) => ({ ...prev, [name]: value }));
+    setData((prev) => ({
+      ...prev,
+      [name]: value.startsWith(" ") ? value.trimStart() : value,
+    }));
   };
 
   const handleArrayChange = (section, index, field, value) => {
@@ -22,7 +25,7 @@ export default function ResumeForm({ data, setData }) {
 
   const handleBlur = () => {
     if (!validateEmail(data.email)) {
-      alert("Please enter a correct email 📧");
+      setError("Invalid email");
     }
   };
 
@@ -37,6 +40,7 @@ export default function ResumeForm({ data, setData }) {
       const updatedSection = [...(prev[section] || [])];
       const updatedItem = { ...updatedSection[index] };
       const updatedList = [...(updatedItem[listName] || [])];
+      if (!value.trim()) return;
       updatedList[listIndex] = value;
       updatedItem[listName] = updatedList;
       updatedSection[index] = updatedItem;
@@ -142,7 +146,7 @@ export default function ResumeForm({ data, setData }) {
             autoComplete="tel"
             value={data.phone}
             onChange={handleChange}
-            pattern="[0-9]{10}"
+            pattern="[0-9+ ]{10,15}"
             required
           />
           <Input
@@ -230,12 +234,21 @@ export default function ResumeForm({ data, setData }) {
       {/* 🔹 PROJECTS */}
       <Section title="Projects" icon={<Briefcase size={14} />}>
         {data.projects?.map((proj, i) => (
-          <Card key={i} onRemove={() => removeItem("projects", i)}>
+          <Card key={proj.id || i} onRemove={() => removeItem("projects", i)}>
             <Input
               label="Project Title"
               value={proj.title}
               onChange={(e) =>
                 handleArrayChange("projects", i, "title", e.target.value)
+              }
+            />
+            <Input
+              label="Project URL"
+              type="url"
+              placeholder="https://example.com"
+              value={proj.url}
+              onChange={(e) =>
+                handleArrayChange("projects", i, "url", e.target.value)
               }
             />
             <Input
@@ -269,7 +282,13 @@ export default function ResumeForm({ data, setData }) {
 
         <AddButton
           onClick={() =>
-            addItem("projects", { title: "", tech: "", points: [""] })
+            addItem("projects", {
+              id: Date.now(),
+              title: "",
+              url: "",
+              tech: "",
+              points: [""],
+            })
           }
         >
           + Add Project
@@ -481,7 +500,9 @@ function Card({ children, onRemove }) {
 function Input({ label, value, ...props }) {
   return (
     <div>
-      <label className="text-[10px] text-white/40">{label}</label>
+      <label htmlFor={props.name} className="text-[10px] text-white/40">
+        {label}
+      </label>
       <input
         className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm focus:outline-none focus:border-cyan-400/50"
         value={value ?? ""}
@@ -539,7 +560,16 @@ function BulletList({ label, items, onChange, onAdd, onRemove }) {
           </button>
         </div>
       ))}
-      <button onClick={onAdd} className="text-cyan-400 text-xs mt-1">
+      <button
+        onClick={() => {
+          if (!items[items.length - 1]?.trim()) {
+            alert("Fill current point first ⚠️");
+            return;
+          }
+          onAdd();
+        }}
+        className="text-cyan-400 text-xs mt-1"
+      >
         + Add Point
       </button>
     </div>

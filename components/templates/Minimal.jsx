@@ -12,6 +12,8 @@ const safeArray = (val) => {
   return [];
 };
 
+const isValidUrl = (url) => url.startsWith("http");
+
 const Section = ({ title, children }) => (
   <div className="mb-6">
     <h3 className="text-sm font-semibold text-gray-900 mb-3 tracking-wide uppercase">
@@ -55,16 +57,22 @@ const MinimalTemplate = ({ data }) => {
       {/* HEADER */}
       <div className="mb-8">
         <h1 className="text-3xl font-medium text-gray-900">
-          {name || "Your Name"}
+          {name?.trim() || "Your Name"}
         </h1>
-        <p className="text-gray-600 mt-1">{role || "Professional Role"}</p>
+        <p className="text-gray-600 mt-1">{role?.trim() || "Professional Role"}</p>
 
         <div className="flex flex-wrap gap-4 text-xs text-gray-500 mt-3">
           {[email, phone, location, linkedin, github, portfolio]
             .filter(Boolean)
             .map((item, i, arr) => (
               <span key={i}>
-                {item}
+                {item.includes("http") ? (
+                  <a href={item} target="_blank" className="underline">
+                    {item}
+                  </a>
+                ) : (
+                  item
+                )}
                 {i !== arr.length - 1 && " | "}
               </span>
             ))}
@@ -85,14 +93,16 @@ const MinimalTemplate = ({ data }) => {
             <div key={i} className="mb-4">
               <div className="flex justify-between">
                 <div>
-                  <p className="font-medium text-gray-900">{exp.role}</p>
+                  {exp.role && (
+                    <p className="font-medium text-gray-900">{exp.role}</p>
+                  )}
                   <p className="text-gray-600 text-sm">{exp.company}</p>
                 </div>
                 <span className="text-xs text-gray-500">{exp.duration}</span>
               </div>
 
               <ul className="mt-1 space-y-1">
-                {exp.points?.map((p, j) => (
+                {safeArray(exp.points).map((p, j) => (
                   <li key={j}>• {p}</li>
                 ))}
               </ul>
@@ -106,13 +116,26 @@ const MinimalTemplate = ({ data }) => {
         <Section title="Projects">
           {projects.map((proj, i) => (
             <div key={i} className="mb-4">
-              <p className="font-medium text-gray-900">
-                {proj.title}{" "}
-                <span className="text-xs text-gray-500">({proj.tech})</span>
-              </p>
-
+              {proj.title && (
+                <p className="font-medium text-gray-900">
+                  {proj.title}{" "}
+                  <span className="text-xs text-gray-500">• {proj.tech}</span>
+                </p>
+              )}
+              {proj.url && (
+                <p className="text-xs text-gray-500">
+                  <a
+                    href={proj.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline"
+                  >
+                    {proj.url.includes("github") ? "GitHub Repo" : "Live Project"}
+                  </a>
+                </p>
+              )}
               <ul className="mt-1 space-y-1">
-                {proj.points?.map((p, j) => (
+                {safeArray(proj.points).map((p, j) => (
                   <li key={j}>• {p}</li>
                 ))}
               </ul>
@@ -127,7 +150,9 @@ const MinimalTemplate = ({ data }) => {
           {education.map((edu, i) => (
             <div key={i} className="flex justify-between">
               <div>
-                <p className="font-medium text-gray-900">{edu.degree}</p>
+                {edu.degree && (
+                  <p className="font-medium text-gray-900">{edu.degree}</p>
+                )}
                 <p className="text-gray-600 text-sm">{edu.school}</p>
               </div>
               <div className="text-xs text-gray-500 text-right">

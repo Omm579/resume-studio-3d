@@ -1,5 +1,5 @@
 import React from "react";
-import { Mail, Phone, MapPin, Globe, Calendar } from "lucide-react";
+import { Mail, Phone, MapPin, Globe, Calendar, Link } from "lucide-react";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 // 🔥 Safe array helper
 const safeArray = (val) => {
@@ -43,7 +43,7 @@ const ModernTemplate = ({ data = {} }) => {
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <h1 className="text-3xl font-bold tracking-wide">
-              {name || "Your Name"}
+              {name?.trim() || "Your Name"}
             </h1>
 
             <h2 className="text-lg text-slate-300 mt-1">
@@ -55,13 +55,13 @@ const ModernTemplate = ({ data = {} }) => {
             {email && (
               <p>
                 <Mail size={14} className="inline mr-2" />
-                {email}
+                <a href={`mailto:${email}`}>{email}</a>
               </p>
             )}
             {phone && (
               <p>
                 <Phone size={14} className="inline mr-2" />
-                {phone}
+                <a href={`tel:${phone}`}>{phone}</a>
               </p>
             )}
             {location && (
@@ -73,19 +73,29 @@ const ModernTemplate = ({ data = {} }) => {
             {data.linkedin && (
               <p>
                 <FaLinkedin className="inline mr-2" />
-                {data.linkedin}
+                <a
+                  href={data.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {data.linkedin}
+                </a>
               </p>
             )}
             {data.github && (
               <p>
                 <FaGithub className="inline mr-2" />
-                {data.github}
+                <a href={data.github} target="_blank">
+                  {data.github}
+                </a>
               </p>
             )}
             {portfolio && (
               <p>
                 <Globe size={14} className="inline mr-2" />
-                {portfolio}
+                <a href={portfolio} target="_blank" rel="noopener noreferrer">
+                  {portfolio}
+                </a>
               </p>
             )}
           </div>
@@ -122,7 +132,7 @@ const ModernTemplate = ({ data = {} }) => {
                   </p>
 
                   <ul className="list-disc ml-5 text-sm space-y-1">
-                    {exp.points?.map((p, j) => (
+                    {safeArray(exp.points).map((p, j) => (
                       <li key={j}>{p}</li>
                     ))}
                   </ul>
@@ -136,11 +146,27 @@ const ModernTemplate = ({ data = {} }) => {
             <Section title="Projects">
               {projects.map((proj, i) => (
                 <div key={i} className="mb-5">
-                  <h4 className="font-semibold">{proj.title}</h4>
-                  <p className="text-sm text-slate-500 mb-1">{proj.tech}</p>
-
+                  {proj.title && (
+                    <h4 className="font-semibold">{proj.title}</h4>
+                  )}
+                  {proj.tech && (
+                    <p className="text-sm text-slate-500 mb-1">{proj.tech}</p>
+                  )}
+                  {proj.url && (
+                    <p className="text-sm text-slate-500 mb-1">
+                      <Link size={12} className="inline mr-1" />
+                      <a
+                        href={proj.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-cyan-500 hover:text-cyan-300 underline break-all transition-colors duration-200"
+                      >
+                        {proj.url.includes("github") ? "GitHub Repo" : "Live Project"}
+                      </a>
+                    </p>
+                  )}
                   <ul className="list-disc ml-5 text-sm text-slate-700">
-                    {proj.points?.map((p, j) => (
+                    {safeArray(proj.points).map((p, j) => (
                       <li key={j}>{p}</li>
                     ))}
                   </ul>
@@ -165,7 +191,8 @@ const ModernTemplate = ({ data = {} }) => {
             ].map(([label, value], i) =>
               value ? (
                 <p key={i} className="text-sm">
-                  <b>{label}:</b> {value}
+                  <span className="font-medium text-slate-700">{label}:</span>{" "}
+                  {value}
                 </p>
               ) : null,
             )}

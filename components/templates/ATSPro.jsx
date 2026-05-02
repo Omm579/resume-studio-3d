@@ -4,15 +4,15 @@ export default function ATSPro({ data }) {
       {/* HEADER */}
       <div className="text-center mb-4">
         <h1 className="text-xl font-bold uppercase">
-          {data.name || "Your Name"}
+          {data.name?.trim() || "Your Name"}
         </h1>
         {data.role && <p className="text-sm">{data.role}</p>}
 
-        <div className="text-[11px] mt-1 flex justify-center gap-1">
+        <div className="text-[11px] mt-1 flex justify-center gap-2 flex-wrap">
           {[data.phone, data.email, data.location].filter(Boolean).join(" | ")}
         </div>
 
-        <div className="text-[11px] flex justify-center gap-1 flex-wrap">
+        <div className="text-[11px] flex justify-center gap-2 flex-wrap">
           {[data.linkedin, data.github, data.portfolio]
             .filter(Boolean)
             .map((link, i, arr) => (
@@ -20,7 +20,7 @@ export default function ATSPro({ data }) {
                 <a
                   href={link}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="underline"
                 >
                   {link}
@@ -35,13 +35,13 @@ export default function ATSPro({ data }) {
 
       {/* SUMMARY */}
       {data.summary && (
-        <Section title="PROFESSIONAL SUMMARY">
+        <Section title="SUMMARY">
           <p>{data.summary}</p>
         </Section>
       )}
 
       {/* SKILLS */}
-      <Section title="TECHNICAL SKILLS">
+      <Section title="SKILLS">
         <div className="space-y-0.5">
           {data.languages && (
             <p>
@@ -89,7 +89,18 @@ export default function ATSPro({ data }) {
               <p className="font-bold">
                 {proj.title} {proj.tech && `| ${proj.tech}`}
               </p>
-
+              {proj.url && (
+                <p className="text-[11px]">
+                  <a
+                    href={proj.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline"
+                  >
+                    {proj.url.includes("github") ? "GitHub Repo" : "Live Project"}
+                  </a>
+                </p>
+              )}
               <ul className="list-disc ml-5">
                 {proj.points?.map((p, j) => p && <li key={j}>{p}</li>)}
               </ul>
@@ -100,7 +111,7 @@ export default function ATSPro({ data }) {
 
       {/* EXPERIENCE */}
       {data.internships?.length > 0 && data.internships[0]?.company && (
-        <Section title="PROFESSIONAL EXPERIENCE">
+        <Section title="WORK EXPERIENCE">
           {data.internships.map((exp, i) => (
             <div key={i} className="mb-3">
               <p className="font-bold">

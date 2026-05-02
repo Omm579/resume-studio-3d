@@ -46,7 +46,7 @@ const ClassicTemplate = ({ data = {} }) => {
       {/* HEADER */}
       <div className="text-center mb-6 border-b pb-4">
         <h1 className="text-3xl font-bold tracking-wide">
-          {name || "Your Name"}
+          {name?.trim() || "Your Name"}
         </h1>
         <h2 className="text-lg text-gray-600 mt-1">
           {role || "Professional Role"}
@@ -54,9 +54,33 @@ const ClassicTemplate = ({ data = {} }) => {
 
         <p className="text-sm mt-2 text-gray-600">
           {[email, phone, location].filter(Boolean).join(" • ")}
-          {linkedin && <> • {linkedin}</>}
-          {github && <> • {github}</>}
-          {portfolio && <> • {portfolio}</>}
+          {linkedin && (
+            <>
+              {" "}
+              •{" "}
+              <a href={linkedin} target="_blank noreferrer">
+                {linkedin}
+              </a>
+            </>
+          )}
+          {github && (
+            <>
+              {" "}
+              •{" "}
+              <a href={github} target="_blank noreferrer">
+                {github}
+              </a>
+            </>
+          )}
+          {portfolio && (
+            <>
+              {" "}
+              •{" "}
+              <a href={portfolio} target="_blank noreferrer">
+                {portfolio}
+              </a>
+            </>
+          )}
         </p>
       </div>
 
@@ -74,14 +98,14 @@ const ClassicTemplate = ({ data = {} }) => {
             <div key={i} className="mb-4">
               <div className="flex justify-between">
                 <div>
-                  <p className="font-semibold">{exp.role}</p>
+                  {exp.role && (<p className="font-semibold">{exp.role}</p>)}
                   <p className="text-sm text-gray-600">{exp.company}</p>
                 </div>
                 <span className="text-sm text-gray-500">{exp.duration}</span>
               </div>
 
               <ul className="list-disc ml-5 text-sm mt-1 space-y-1">
-                {exp.points?.map((p, j) => (
+                {parseList(exp.points).map((p, j) => (
                   <li key={j}>{p}</li>
                 ))}
               </ul>
@@ -95,13 +119,22 @@ const ClassicTemplate = ({ data = {} }) => {
         <Section title="Projects">
           {projects.map((proj, i) => (
             <div key={i} className="mb-4">
-              <p className="font-semibold">
-                {proj.title}{" "}
+                {proj.title && <p className="font-semibold">{proj.title}</p>}{" "}
                 <span className="text-gray-500 text-sm">({proj.tech})</span>
-              </p>
-
+              {proj.url && (
+                <p className="text-sm text-gray-600">
+                  <a
+                    href={proj.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline"
+                  >
+                    {proj.url.includes("github") ? "GitHub Repo" : "Live Project"}
+                  </a>
+                </p>
+              )}
               <ul className="list-disc ml-5 text-sm mt-1 space-y-1">
-                {proj.points?.map((p, j) => (
+                {parseList(proj.points).map((p, j) => (
                   <li key={j}>{p}</li>
                 ))}
               </ul>
@@ -116,7 +149,7 @@ const ClassicTemplate = ({ data = {} }) => {
           {education.map((edu, i) => (
             <div key={i} className="flex justify-between mb-2">
               <div>
-                <p className="font-semibold">{edu.degree}</p>
+                {edu.degree && (<p className="font-semibold">{edu.degree}</p>)}
                 <p className="text-sm text-gray-600">{edu.school}</p>
               </div>
               <div className="text-right text-sm text-gray-500">
