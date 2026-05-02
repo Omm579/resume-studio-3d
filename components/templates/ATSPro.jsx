@@ -1,4 +1,13 @@
 export default function ATSPro({ data }) {
+  // ✅ URL FIX
+  const formatUrl = (url) => {
+    if (!url) return "";
+    if (url.startsWith("http://") || url.startsWith("https://")) {
+      return url;
+    }
+    return "https://" + url;
+  };
+
   return (
     <div className="bg-white text-black p-10 text-[12px] leading-relaxed font-sans w-full max-w-[800px] mx-auto">
       {/* HEADER */}
@@ -6,19 +15,28 @@ export default function ATSPro({ data }) {
         <h1 className="text-xl font-bold uppercase">
           {data.name?.trim() || "Your Name"}
         </h1>
+
         {data.role && <p className="text-sm">{data.role}</p>}
 
+        {/* 🔥 CLICKABLE CONTACT */}
         <div className="text-[11px] mt-1 flex justify-center gap-2 flex-wrap">
-          {[data.phone, data.email, data.location].filter(Boolean).join(" | ")}
+          {data.phone && <a href={`tel:${data.phone}`}>{data.phone}</a>}
+          {data.phone && data.email && " | "}
+
+          {data.email && <a href={`mailto:${data.email}`}>{data.email}</a>}
+          {(data.phone || data.email) && data.location && " | "}
+
+          {data.location && <span>{data.location}</span>}
         </div>
 
+        {/* 🔥 FIXED LINKS */}
         <div className="text-[11px] flex justify-center gap-2 flex-wrap">
           {[data.linkedin, data.github, data.portfolio]
             .filter(Boolean)
             .map((link, i, arr) => (
               <span key={i}>
                 <a
-                  href={link}
+                  href={formatUrl(link)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="underline"
@@ -93,20 +111,35 @@ export default function ATSPro({ data }) {
                 )}
               </p>
 
-              {proj.url && (
+              {/* 🔥 BOTH LINKS */}
+              {(proj.url || proj.githubUrl) && (
                 <p className="text-[11px]">
-                  <a
-                    href={proj.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline"
-                  >
-                    {proj.url.includes("github")
-                      ? "GitHub Repo"
-                      : "Live Project"}
-                  </a>
+                  {proj.url && (
+                    <a
+                      href={formatUrl(proj.url)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline"
+                    >
+                      Live Project
+                    </a>
+                  )}
+
+                  {proj.url && proj.githubUrl && " | "}
+
+                  {proj.githubUrl && (
+                    <a
+                      href={formatUrl(proj.githubUrl)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline"
+                    >
+                      GitHub Repo
+                    </a>
+                  )}
                 </p>
               )}
+
               <ul className="list-disc ml-5">
                 {proj.points?.map((p, j) => p && <li key={j}>{p}</li>)}
               </ul>
@@ -207,7 +240,6 @@ function Divider() {
   return <div className="border-t border-black mb-3" />;
 }
 
-// 🔥 Converts comma text → bullet list
 function List({ text }) {
   if (!text) return null;
 

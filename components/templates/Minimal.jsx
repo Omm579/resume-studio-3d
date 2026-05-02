@@ -12,7 +12,16 @@ const safeArray = (val) => {
   return [];
 };
 
-const isValidUrl = (url) => url.startsWith("http");
+// ✅ URL FIX (works without https)
+const formatUrl = (url) => {
+  if (!url) return "";
+  if (url.startsWith("http://") || url.startsWith("https://")) {
+    return url;
+  }
+  return "https://" + url;
+};
+
+const isValidUrl = (url) => url && url.trim() !== "";
 
 const Section = ({ title, children }) => (
   <div className="mb-6">
@@ -59,21 +68,69 @@ const MinimalTemplate = ({ data }) => {
         <h1 className="text-3xl font-medium text-gray-900">
           {name?.trim() || "Your Name"}
         </h1>
-        <p className="text-gray-600 mt-1">{role?.trim() || "Professional Role"}</p>
+        <p className="text-gray-600 mt-1">
+          {role?.trim() || "Professional Role"}
+        </p>
 
-        <div className="flex flex-wrap gap-4 text-xs text-gray-500 mt-3">
-          {[email, phone, location, linkedin, github, portfolio]
+        <div className="flex flex-wrap gap-2 text-xs text-gray-500 mt-3">
+          {[
+            email && (
+              <a href={`mailto:${email}`} key="email">
+                {email}
+              </a>
+            ),
+
+            phone && (
+              <a href={`tel:${phone}`} key="phone">
+                {phone}
+              </a>
+            ),
+
+            location && <span key="location">{location}</span>,
+
+            linkedin && (
+              <a
+                key="linkedin"
+                href={formatUrl(linkedin)}
+                target="_blank"
+                rel="noreferrer"
+                className="underline"
+              >
+                {linkedin}
+              </a>
+            ),
+
+            github && (
+              <a
+                key="github"
+                href={formatUrl(github)}
+                target="_blank"
+                rel="noreferrer"
+                className="underline"
+              >
+                {github}
+              </a>
+            ),
+
+            portfolio && (
+              <a
+                key="portfolio"
+                href={formatUrl(portfolio)}
+                target="_blank"
+                rel="noreferrer"
+                className="underline"
+              >
+                {portfolio}
+              </a>
+            ),
+          ]
             .filter(Boolean)
             .map((item, i, arr) => (
               <span key={i}>
-                {item.includes("http") ? (
-                  <a href={item} target="_blank" className="underline">
-                    {item}
-                  </a>
-                ) : (
-                  item
+                {item}
+                {i !== arr.length - 1 && (
+                  <span className="text-gray-400 mx-1">|</span>
                 )}
-                {i !== arr.length - 1 && " | "}
               </span>
             ))}
         </div>
@@ -122,18 +179,35 @@ const MinimalTemplate = ({ data }) => {
                   <span className="text-xs text-gray-500">• {proj.tech}</span>
                 </p>
               )}
-              {proj.url && (
-                <p className="text-xs text-gray-500">
-                  <a
-                    href={proj.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline"
-                  >
-                    {proj.url.includes("github") ? "GitHub Repo" : "Live Project"}
-                  </a>
+
+              {(isValidUrl(proj.url) || isValidUrl(proj.githubUrl)) && (
+                <p className="text-xs text-gray-500 flex flex-wrap gap-1">
+                  {proj.url && (
+                    <a
+                      href={formatUrl(proj.url)}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="underline"
+                    >
+                      Live Project
+                    </a>
+                  )}
+
+                  {proj.url && proj.githubUrl && <span>|</span>}
+
+                  {proj.githubUrl && (
+                    <a
+                      href={formatUrl(proj.githubUrl)}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="underline"
+                    >
+                      GitHub Repo
+                    </a>
+                  )}
                 </p>
               )}
+
               <ul className="mt-1 space-y-1">
                 {safeArray(proj.points).map((p, j) => (
                   <li key={j}>• {p}</li>
@@ -179,7 +253,7 @@ const MinimalTemplate = ({ data }) => {
         </Section>
       )}
 
-      {/* EXTRA SECTIONS */}
+      {/* EXTRA */}
       <section className="mt-12">
         {safeArray(data.achievements).length > 0 && (
           <Section title="ACHIEVEMENTS">

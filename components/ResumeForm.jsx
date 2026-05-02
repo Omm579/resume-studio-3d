@@ -2,6 +2,15 @@
 import { User, Code, Briefcase, GraduationCap, Award } from "lucide-react";
 import { X } from "lucide-react";
 
+const formatUrl = (url) => {
+  if (!url) return "";
+  const trimmed = url.trim();
+  if (!trimmed.startsWith("http://") && !trimmed.startsWith("https://")) {
+    return "https://" + trimmed;
+  }
+  return trimmed;
+};
+
 export default function ResumeForm({ data, setData }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -13,7 +22,13 @@ export default function ResumeForm({ data, setData }) {
 
   const handleArrayChange = (section, index, field, value) => {
     setData((prev) => {
+      if (field === "githubUrl") {
+        value = value.trim();
+      }
       const updated = [...(prev[section] || [])];
+      // 🔥 auto format URLs
+      const formattedValue =
+        field === "url" || field === "githubUrl" ? formatUrl(value) : value;
       updated[index] = { ...updated[index], [field]: value };
       return { ...prev, [section]: updated };
     });
@@ -252,6 +267,15 @@ export default function ResumeForm({ data, setData }) {
               }
             />
             <Input
+              label="Github URL"
+              type="url"
+              placeholder="https://github.com/user/repo"
+              value={proj.githubUrl}
+              onChange={(e) =>
+                handleArrayChange("projects", i, "githubUrl", e.target.value)
+              }
+            />
+            <Input
               label="Technologies Used"
               value={proj.tech}
               onChange={(e) =>
@@ -286,6 +310,7 @@ export default function ResumeForm({ data, setData }) {
               id: Date.now(),
               title: "",
               url: "",
+              githubUrl: "",
               tech: "",
               points: [""],
             })

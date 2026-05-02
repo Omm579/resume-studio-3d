@@ -28,7 +28,16 @@ const ClassicTemplate = ({ data = {} }) => {
     interests,
   } = data;
 
-  // 🔥 SAFE LIST PARSER (no crash ever)
+  // ✅ SAFE URL FORMATTER
+  const formatUrl = (url) => {
+    if (!url) return "";
+    if (url.startsWith("http://") || url.startsWith("https://")) {
+      return url;
+    }
+    return "https://" + url;
+  };
+
+  // 🔥 SAFE LIST PARSER
   const parseList = (value) => {
     if (!value) return [];
     if (Array.isArray(value)) return value;
@@ -48,35 +57,50 @@ const ClassicTemplate = ({ data = {} }) => {
         <h1 className="text-3xl font-bold tracking-wide">
           {name?.trim() || "Your Name"}
         </h1>
+
         <h2 className="text-lg text-gray-600 mt-1">
           {role || "Professional Role"}
         </h2>
 
         <p className="text-sm mt-2 text-gray-600">
-          {[email, phone, location].filter(Boolean).join(" • ")}
+          {email && (
+            <>
+              <a href={`mailto:${email}`}>{email}</a>
+              {" • "}
+            </>
+          )}
+
+          {phone && (
+            <>
+              <a href={`tel:${phone}`}>{phone}</a>
+              {" • "}
+            </>
+          )}
+
+          {location && <span>{location}</span>}
+
           {linkedin && (
             <>
-              {" "}
-              •{" "}
-              <a href={linkedin} target="_blank noreferrer">
+              {" • "}
+              <a href={formatUrl(linkedin)} target="_blank" rel="noreferrer">
                 {linkedin}
               </a>
             </>
           )}
+
           {github && (
             <>
-              {" "}
-              •{" "}
-              <a href={github} target="_blank noreferrer">
+              {" • "}
+              <a href={formatUrl(github)} target="_blank" rel="noreferrer">
                 {github}
               </a>
             </>
           )}
+
           {portfolio && (
             <>
-              {" "}
-              •{" "}
-              <a href={portfolio} target="_blank noreferrer">
+              {" • "}
+              <a href={formatUrl(portfolio)} target="_blank" rel="noreferrer">
                 {portfolio}
               </a>
             </>
@@ -98,7 +122,7 @@ const ClassicTemplate = ({ data = {} }) => {
             <div key={i} className="mb-4">
               <div className="flex justify-between">
                 <div>
-                  {exp.role && (<p className="font-semibold">{exp.role}</p>)}
+                  {exp.role && <p className="font-semibold">{exp.role}</p>}
                   <p className="text-sm text-gray-600">{exp.company}</p>
                 </div>
                 <span className="text-sm text-gray-500">{exp.duration}</span>
@@ -119,20 +143,42 @@ const ClassicTemplate = ({ data = {} }) => {
         <Section title="Projects">
           {projects.map((proj, i) => (
             <div key={i} className="mb-4">
-                {proj.title && <p className="font-semibold">{proj.title}</p>}{" "}
-                <span className="text-gray-500 text-sm">({proj.tech})</span>
-              {proj.url && (
-                <p className="text-sm text-gray-600">
-                  <a
-                    href={proj.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline"
-                  >
-                    {proj.url.includes("github") ? "GitHub Repo" : "Live Project"}
-                  </a>
+              {proj.title && (
+                <p className="font-semibold">
+                  {proj.title}{" "}
+                  <span className="text-gray-500 text-sm">({proj.tech})</span>
                 </p>
               )}
+
+              {/* 🔥 BOTH LINKS */}
+              {(proj.url || proj.githubUrl) && (
+                <p className="text-sm text-gray-600">
+                  {proj.url && (
+                    <a
+                      href={formatUrl(proj.url)}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="underline"
+                    >
+                      Live Project
+                    </a>
+                  )}
+
+                  {proj.url && proj.githubUrl && " | "}
+
+                  {proj.githubUrl && (
+                    <a
+                      href={formatUrl(proj.githubUrl)}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="underline"
+                    >
+                      GitHub Repo
+                    </a>
+                  )}
+                </p>
+              )}
+
               <ul className="list-disc ml-5 text-sm mt-1 space-y-1">
                 {parseList(proj.points).map((p, j) => (
                   <li key={j}>{p}</li>
@@ -149,7 +195,7 @@ const ClassicTemplate = ({ data = {} }) => {
           {education.map((edu, i) => (
             <div key={i} className="flex justify-between mb-2">
               <div>
-                {edu.degree && (<p className="font-semibold">{edu.degree}</p>)}
+                {edu.degree && <p className="font-semibold">{edu.degree}</p>}
                 <p className="text-sm text-gray-600">{edu.school}</p>
               </div>
               <div className="text-right text-sm text-gray-500">
@@ -228,18 +274,13 @@ const ClassicTemplate = ({ data = {} }) => {
       {activities.length > 0 && (
         <Section title="Extracurricular Activities">
           <ul className="text-sm space-y-1 list-disc ml-5">
-            {activities.map((a, i) => {
-              if (typeof a === "string") return <li key={i}>{a}</li>;
-              if (a && typeof a === "object") {
-                return (
-                  <li key={i}>
-                    <strong>{a.title}</strong>
-                    {a.description && ` — ${a.description}`}
-                  </li>
-                );
-              }
-              return null;
-            })}
+            {activities.map((a, i) => (
+              <li key={i}>
+                {typeof a === "object"
+                  ? `${a.title}${a.description ? " — " + a.description : ""}`
+                  : a}
+              </li>
+            ))}
           </ul>
         </Section>
       )}

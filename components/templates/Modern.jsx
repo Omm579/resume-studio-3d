@@ -10,6 +10,17 @@ const safeArray = (val) => {
   }
   return [];
 };
+// 🔥 Format URL helper
+const formatUrl = (url) => {
+  if (!url) return "";
+  let clean = url.trim();
+
+  if (!clean.startsWith("http://") && !clean.startsWith("https://")) {
+    clean = "https://" + clean;
+  }
+
+  return clean;
+};
 
 const ModernTemplate = ({ data = {} }) => {
   const {
@@ -74,7 +85,7 @@ const ModernTemplate = ({ data = {} }) => {
               <p>
                 <FaLinkedin className="inline mr-2" />
                 <a
-                  href={data.linkedin}
+                  href={formatUrl(data.linkedin)}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -85,7 +96,11 @@ const ModernTemplate = ({ data = {} }) => {
             {data.github && (
               <p>
                 <FaGithub className="inline mr-2" />
-                <a href={data.github} target="_blank">
+                <a
+                  href={formatUrl(data.github)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {data.github}
                 </a>
               </p>
@@ -93,7 +108,11 @@ const ModernTemplate = ({ data = {} }) => {
             {portfolio && (
               <p>
                 <Globe size={14} className="inline mr-2" />
-                <a href={portfolio} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={formatUrl(portfolio)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {portfolio}
                 </a>
               </p>
@@ -152,19 +171,33 @@ const ModernTemplate = ({ data = {} }) => {
                   {proj.tech && (
                     <p className="text-sm text-slate-500 mb-1">{proj.tech}</p>
                   )}
-                  {proj.url && (
-                    <p className="text-sm text-slate-500 mb-1">
-                      <Link size={12} className="inline mr-1" />
-                      <a
-                        href={proj.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-cyan-500 hover:text-cyan-300 underline break-all transition-colors duration-200"
-                      >
-                        {proj.url.includes("github")
-                          ? "GitHub Repo"
-                          : "Live Project"}
-                      </a>
+                  {(proj.url || proj.githubUrl) && (
+                    <p className="text-sm text-slate-500 mb-1 flex items-center gap-2 flex-wrap">
+                      <Link size={12} />
+
+                      {proj.url && (
+                        <a
+                          href={formatUrl(proj.url)}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-cyan-500 hover:text-cyan-300 underline transition"
+                        >
+                          Live Project
+                        </a>
+                      )}
+
+                      {proj.url && proj.githubUrl && <span>|</span>}
+
+                      {proj.githubUrl && (
+                        <a
+                          href={formatUrl(proj.githubUrl)}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-purple-500 hover:text-purple-300 underline transition"
+                        >
+                          GitHub Repo
+                        </a>
+                      )}
                     </p>
                   )}
                   <ul className="list-disc ml-5 text-sm text-slate-700">
