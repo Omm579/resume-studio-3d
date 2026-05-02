@@ -218,26 +218,96 @@ ollama serve
 
 <br/>
 
+## 🤝 Contributing
+
+> Help shape the future of **ResumeVerse 3D** — where resumes meet immersive web experiences.
+
+We welcome thoughtful contributions that improve performance, design, or user experience.
+
+---
+
+### ✦ How to Contribute
+1. **Fork the repository**
+2. **Create a feature branch** (`git checkout -b feature/amazing-feature`)
+3. **Commit your changes** (`git commit -m 'Add amazing feature'`)
+4. **Push to the branch** (`git push origin feature/amazing-feature`)
+5. **Open a Pull Request**
+    
+---
+
+### ✦ Contribution Principles
+- Stay consistent with the existing architecture & design system
+- Write clean, modular, and scalable code
+- Use TypeScript with proper typings
+- Maintain smooth UI/UX (animations matter here)
+- Test your changes before submitting
+- Update documentation when needed
+  
+---
+
+### ✦ Code Standards
+- React best practices (hooks, separation of concerns)
+- Tailwind CSS for styling
+- Clean formatting (ESLint + Prettier)
+  
+---
+
+## 🐛 Bug Reports & Feature Requests
+
+If you encounter any bugs or have feature requests, please create an issue on GitHub with:
+- A clear description of the bug/feature
+- Steps to reproduce (for bugs)
+- Expected vs actual behavior
+- Screenshots if applicable
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+<br/>
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=gradient&customColorList=0:00ffe0,100:7b2fff&height=2" width="100%"/>
+
+<br/>
+
 ## 👤 Author
 
 <div align="center">
 
-   <img src="https://avatars.githubusercontent.com/Omm579"
-       width="110"
-       style="
-       border-radius:50%;
-       padding:4px;
+  <!-- Avatar with gradient ring -->
+  <img src="https://avatars.githubusercontent.com/Omm579?v=4"
+       width="120"
+       style="border-radius:50%; padding:4px;
        background: linear-gradient(135deg, #00ffe0, #7b2fff);
-       box-shadow: 0 6px 18px rgba(0,0,0,0.4);
-       " />
-   
-<br/>
+       box-shadow: 0 8px 24px rgba(0,0,0,0.4);" />
 
-**Om Debasish**
+  <!-- Name with glow effect (simulated using emoji + spacing) -->
+  <h2>
+    Om Debasish ✦
+  </h2>
 
-[![GitHub](https://img.shields.io/badge/@Omm579-0d1117?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Omm579)
+  <!-- Subtitle -->
+  <p>
+    <i>Building immersive web experiences at the intersection of code & design</i>
+  </p>
 
-*B.Tech CSE (Data Science) · Gandhi Engineering College, Bhubaneswar*
+  <br/>
+
+  <!-- Badges row -->
+  <p>
+    <img src="https://img.shields.io/badge/💻%20Full%20Stack-0d1117?style=for-the-badge"/>
+    <img src="https://img.shields.io/badge/🎨%203D%20UI%20Enthusiast-0d1117?style=for-the-badge"/>
+    <img src="https://img.shields.io/badge/⚡%20Next.js%20Builder-0d1117?style=for-the-badge"/>
+  </p>
+
+  <br/>
+
+  <!-- Socials -->
+  <a href="https://github.com/Omm579">
+    <img src="https://img.shields.io/badge/GitHub-@Omm579-7b2fff?style=for-the-badge&logo=github&logoColor=white"/>
+  </a>
 
 </div>
 
