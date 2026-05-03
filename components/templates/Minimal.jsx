@@ -154,6 +154,7 @@ const MinimalTemplate = ({ data }) => {
                     <p className="font-medium text-gray-900">{exp.role}</p>
                   )}
                   <p className="text-gray-600 text-sm">{exp.company}</p>
+                  <p className="text-xs text-gray-500">{exp.location}</p>
                 </div>
                 <span className="text-xs text-gray-500">{exp.duration}</span>
               </div>

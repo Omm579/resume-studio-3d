@@ -123,7 +123,7 @@ const ClassicTemplate = ({ data = {} }) => {
               <div className="flex justify-between">
                 <div>
                   {exp.role && <p className="font-semibold">{exp.role}</p>}
-                  <p className="text-sm text-gray-600">{exp.company}</p>
+                  <p className="text-sm text-gray-600">{exp.company}, {exp.location}</p>
                 </div>
                 <span className="text-sm text-gray-500">{exp.duration}</span>
               </div>
