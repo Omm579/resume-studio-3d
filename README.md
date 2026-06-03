@@ -47,7 +47,7 @@
 
 ```
   ┌──────────┐    ┌──────┐    ┌─────────────────┐    ┌──────────────┐    ┌────────────┐
-  │3D Landing│ →  │ Auth │ →  │Builder Workspace│ →  │Live Preview  │ →  │ PDF Export │
+  │3D Landing│ →  │ Auth │ →  │Builder Workspace│ →  │ Live Preview │ →  │ PDF Export │
   └──────────┘    └──────┘    └─────────────────┘    └──────────────┘    └────────────┘
 ```
 
